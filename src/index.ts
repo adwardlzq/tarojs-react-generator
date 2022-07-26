@@ -2,8 +2,14 @@ import { ComponentGenerator } from "./generators/components";
 import { PageGenerator } from "./generators/page";
 import { getCssExt } from "./utils";
 
-export default (ctx, pluginOpts) => {
-  const { css = "sass", cssModules = true } = pluginOpts;
+interface optsType {
+  css: string,
+  cssModules: boolean,
+  typescript: boolean,
+  hooks: boolean
+}
+export default (ctx, pluginOpts: optsType) => {
+  const { css = "sass", cssModules = true, typescript = false, hooks = false } = pluginOpts;
   ctx.registerCommand({
     // 命令名
     name: "g",
@@ -30,13 +36,15 @@ export default (ctx, pluginOpts) => {
         return console.log(chalk.red("请输入需要创建的组件/页面名称！！"));
       }
 
-      if (typeof component == "string") {
+      if (typeof component === "string") {
         return ComponentGenerator({
           cssModules,
           componentPath: component,
           appPath,
           cssExt,
           chalk,
+          typescript,
+          hooks,
         });
       }
 
@@ -48,6 +56,8 @@ export default (ctx, pluginOpts) => {
           appPath,
           chalk,
           cssExt,
+          typescript,
+          hooks,
         });
       }
 

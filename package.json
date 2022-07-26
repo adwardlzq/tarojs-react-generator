@@ -1,13 +1,12 @@
 {
   "name": "tarojs-react-generator",
-  "version": "0.0.1",
-  "description": "Taro Generator 生成器",
+  "version": "1.0.0",
+  "description": "taro页面/组件创建工具，支持taro3 + react",
   "main": "index.js",
   "scripts": {
-    "build": "npm run clean && npm run prod",
-    "pub": "npm version patch && npm run build && npm publish",
+    "build": "npm run clean && tsc",
+    "pub": "npm run build && npm publish",
     "dev": "tsc -w",
-    "prod": "tsc",
     "clean": "rimraf dist"
   },
   "files": [
@@ -20,7 +19,8 @@
     "url": "git+https://github.com/dingff/tarojs-react-generator.git"
   },
   "keywords": [
-    "Taro"
+    "Taro",
+    "React"
   ],
   "author": "dingff",
   "license": "MIT",

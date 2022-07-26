@@ -1,22 +1,16 @@
 # tarojs-react-generator
 
-> Taro 页面/组件创建工具，使用函数式组件+typescript
-
-
+> taro页面/组件创建工具，支持taro3 + react
 
 ## 安装
 
-在 Taro 项目根目录下安装
 
 ```bash
-$ npm i tarojs-react-generator --save
+npm install tarojs-react-generator --save-dev
 ```
 
 ## 使用
 
-### 引入插件
-
-请确保 Taro CLI 已升级至 Taro3 的最新版本。
 
 修改项目 `config/index.js` 中的 plugins 配置为如下
 
@@ -24,28 +18,12 @@ $ npm i tarojs-react-generator --save
 const config = {
   ...
   plugins: [
-    ...其余插件
-
-    'tarojs-react-generator'
-  ]
-  ...
-}
-```
-
-```js
-//可配置css编译器： 支持 
-// 'none':
-// 'sass':
-// 'less':
-// 'stylus':
-const config = {
-  ...
-  plugins: [
-    ...其余插件
-
-    ['tarojs-react-generator',{
-      css: 'sass', // 支持 none sass less stylus
-      cssModules: false, // 关闭cssModules
+    ...
+    ['tarojs-react-generator', {
+      css: 'sass',
+      cssModules: true,
+      typescript: true,
+      hooks: true
     }]
   ]
   ...
@@ -53,60 +31,60 @@ const config = {
 ```
 
 ### 插件配置
-> #### generator插件支持以下参数
 
-| 参数项 | 类型 | 是否可选 | 用途 | 默认值 |
+| 参数项 | 类型 | 用途 | 默认值 |
 | :-----| :---- | :---- | :---- |:---- |
-| css | string | 是 | 指定css类型，可选择 ```none```, ```sass```, ```less```, ```stylus``` | ```sass```|
-| cssModules | boolean | 是 | 可选项```true```, ```false```  | ```true``` |
+| css | string | 指定css预处理器，可选 ```none```, ```sass```, ```less```, ```stylus``` | ```sass```|
+| cssModules | boolean | 是否开启cssModules，可选 ```true```, ```false```  | ```true``` |
+| typescript | boolean | 是否使用typescript，可选 ```true```, ```false```  | ```false``` |
+| hooks | boolean | 是否使用hooks，可选 ```true```, ```false```  | ```false``` |
 
 
 ### 命令行参数
 
-generator插件支持以下参数
 
-| 参数项 | 类型 | 是否可选 | 用途 |
+| 参数项 | 类型 | 用途 |
 | :-----| :---- | :---- | :---- |
-| --component | string | 是 | 创建一个组件/页面级组件 |
-| --page | string | 是 | 创建一个页面 |
+| --component | string | 创建一个公共组件/页面组件 |
+| --page | string | 创建一个页面 |
 
 
-#### 使用案例
+### 示例
 
-##### 1.创建公共组件
+##### 创建公共组件
 ```bash
- taro g --component Button
+taro g --component Button
 ```
 
 
-##### 2.创建页面组件
+##### 创建页面组件，index为页面文件夹名称
 ```bash
- taro g --component index/Button  // index为页面文件夹名称，自动查询为 pages/index
+taro g --component index/Button  
 ```
 
 
-##### 3.创建页面
+##### 创建页面
 ```bash
- taro g --page mine
+taro g --page mine
 ```
 
 生成结果：
 ```
--- 页面:          pages/mine/index.tsx
--- 页面配置:       pages/mine/index.config.tsx
--- 页面样式:      pages/mine/index.module.scss
+-- 页面：pages/mine/index.tsx
+-- 配置：pages/mine/index.config.tsx
+-- 样式：pages/mine/index.module.scss
 ```
 
 
 
-##### 4.创建页面(指定路径)
+##### 创建页面（指定路径）
 ```bash
- taro g --page index/bannerDetail
+taro g --page index/bannerDetail
 ```
 
 生成结果：
 ```
--- 页面:          pages/index/bannerDetail/index.tsx
--- 页面配置:       pages/index/bannerDetail/index.config.tsx
--- 页面样式:      pages/index/bannerDetail/index.module.scss
+-- 页面：pages/index/bannerDetail/index.tsx
+-- 配置：pages/index/bannerDetail/index.config.tsx
+-- 样式：pages/index/bannerDetail/index.module.scss
 ```

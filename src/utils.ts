@@ -16,18 +16,18 @@ const cssExts = {
   less: "less",
   stylus: "styl",
 };
-/** 计算css后缀 */
 export function getCssExt(css) {
   return cssExts[css];
 }
 
-/**
- * 补充一下后缀，生成　.module
- * */
 export function getCssModuleExt(cssModuleOpened) {
   return cssModuleOpened ? ".module" : "";
 }
 
 export function getCssModuleClassName(className, cssModuleOpened) {
-  return cssModuleOpened ? `{styles.${className}}` : `"${className}"`;
+  return cssModuleOpened ? `{styles.${className}}` : `'${className}'`;
+}
+
+export function getCssImport(cssModuleOpened: boolean, cssExt: string) {
+ return `import${cssModuleOpened ? ' styles from' : ''} './index${getCssModuleExt(cssModuleOpened)}.${cssExt}';`
 }
