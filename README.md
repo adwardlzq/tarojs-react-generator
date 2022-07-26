@@ -1,6 +1,6 @@
 # tarojs-react-generator
 
-> taro页面/组件创建工具，支持taro3 + react
+> Taro 页面/组件创建工具，支持 Taro3 + react
 
 ## 安装
 
@@ -12,7 +12,7 @@ npm install tarojs-react-generator --save-dev
 ## 使用
 
 
-修改项目 `config/index.js` 中的 plugins 配置为如下
+修改项目 `config/index.js` 中的 plugins 配置
 
 ```js
 const config = {
@@ -33,7 +33,7 @@ const config = {
 ### 插件配置
 
 | 参数项 | 类型 | 用途 | 默认值 |
-| :-----| :---- | :---- | :---- |:---- |
+| :-----| :---- | :---- | :---- |
 | css | string | 指定css预处理器，可选 ```none```, ```sass```, ```less```, ```stylus``` | ```sass```|
 | cssModules | boolean | 是否开启cssModules，可选 ```true```, ```false```  | ```true``` |
 | typescript | boolean | 是否使用typescript，可选 ```true```, ```false```  | ```false``` |
@@ -44,7 +44,7 @@ const config = {
 
 
 | 参数项 | 类型 | 用途 |
-| :-----| :---- | :---- | :---- |
+| :-----| :---- | :---- |
 | --component | string | 创建一个公共组件/页面组件 |
 | --page | string | 创建一个页面 |
 
@@ -68,7 +68,6 @@ taro g --component index/Button
 taro g --page mine
 ```
 
-生成结果：
 ```
 -- 页面：pages/mine/index.tsx
 -- 配置：pages/mine/index.config.tsx
@@ -82,7 +81,6 @@ taro g --page mine
 taro g --page index/bannerDetail
 ```
 
-生成结果：
 ```
 -- 页面：pages/index/bannerDetail/index.tsx
 -- 配置：pages/index/bannerDetail/index.config.tsx
