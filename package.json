@@ -1,0 +1,43 @@
+{
+  "name": "tarojs-react-generator",
+  "version": "0.0.1",
+  "description": "Taro Generator 生成器",
+  "main": "index.js",
+  "scripts": {
+    "build": "npm run clean && npm run prod",
+    "pub": "npm version patch && npm run build && npm publish",
+    "dev": "tsc -w",
+    "prod": "tsc",
+    "clean": "rimraf dist"
+  },
+  "files": [
+    "dist",
+    "index.js",
+    "package.json"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dingff/tarojs-react-generator.git"
+  },
+  "keywords": [
+    "Taro"
+  ],
+  "author": "dingff",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/dingff/tarojs-react-generator/issues"
+  },
+  "homepage": "https://github.com/dingff/tarojs-react-generator#readme",
+  "devDependencies": {
+    "@tarojs/service": "^3.0.14",
+    "@types/node": "^13.9.8",
+    "jest": "^25.2.4",
+    "rimraf": "^3.0.2",
+    "ts-jest": "^25.3.0",
+    "@tarojs/helper": "^3.0.14",
+    "typescript": "^3.8.3"
+  },
+  "dependencies": {
+    "glob": "^7.1.6"
+  }
+}
