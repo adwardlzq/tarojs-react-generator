@@ -1,6 +1,6 @@
 # tarojs-react-generator
 
-> Taro 页面/组件创建工具，支持 Taro3 + React
+> Taro 页面/组件创建工具，支持 Taro 3 + React
 
 ## 安装
 
@@ -23,7 +23,11 @@ const config = {
       css: 'sass',
       cssModules: true,
       typescript: true,
-      hooks: true
+      hooks: true,
+      updateRouter: {
+        enable: true,
+        space: 4
+      }
     }]
   ]
   ...
@@ -34,14 +38,20 @@ const config = {
 
 | 参数项 | 类型 | 用途 | 默认值 |
 | :-----| :---- | :---- | :---- |
-| css | string | 指定css预处理器，可选 ```none```, ```sass```, ```less```, ```stylus``` | ```sass```|
-| cssModules | boolean | 是否开启cssModules，可选 ```true```, ```false```  | ```true``` |
-| typescript | boolean | 是否使用typescript，可选 ```true```, ```false```  | ```false``` |
-| hooks | boolean | 是否使用hooks，可选 ```true```, ```false```  | ```false``` |
+| css | string | 指定 css 预处理器，可选 ```none```, ```sass```, ```less```, ```stylus``` | ```sass```|
+| cssModules | boolean | 是否开启 cssModules，可选 ```true```, ```false```  | ```true``` |
+| typescript | boolean | 是否使用 typescript，可选 ```true```, ```false```  | ```false``` |
+| hooks | boolean | 是否使用 hooks，可选 ```true```, ```false```  | ```false``` |
+| updateRouter | object | 创建页面后更新路由配置 |  |
 
+### updateRouter参数
+
+| 参数项 | 类型 | 用途 | 默认值 |
+| :-----| :---- | :---- | :---- |
+| enable | boolean | 是否开启，可选 ```true```, ```false```  | ```true``` |
+| space | number | 插入位置缩进空格数 | ```4``` |
 
 ### 命令行参数
-
 
 | 参数项 | 类型 | 用途 |
 | :-----| :---- | :---- |
@@ -57,7 +67,7 @@ taro g --component Button
 ```
 
 
-##### 创建页面组件，index为页面文件夹名称
+##### 创建页面组件（index为页面文件夹名称）
 ```bash
 taro g --component index/Button  
 ```

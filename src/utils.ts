@@ -1,10 +1,8 @@
-/** 首字母大写 */
 export function firstUpperCase(str: string) {
   return str.replace(/\b(\w)(\w*)/g, function (_$0, $1, $2) {
     return $1.toUpperCase() + $2;
   });
 }
-/** 首字母小写 */
 export function firstLowerCase(str: string) {
   return str.replace(/\b(\w)(\w*)/g, function (_$0, $1, $2) {
     return $1.toLowerCase() + $2;
@@ -16,18 +14,18 @@ const cssExts = {
   less: "less",
   stylus: "styl",
 };
-export function getCssExt(css) {
+export function getCssExt(css: string) {
   return cssExts[css];
 }
 
-export function getCssModuleExt(cssModuleOpened) {
-  return cssModuleOpened ? ".module" : "";
+export function getCssModuleExt(cssModules: boolean) {
+  return cssModules ? ".module" : "";
 }
 
-export function getCssModuleClassName(className, cssModuleOpened) {
-  return cssModuleOpened ? `{styles.${className}}` : `'${className}'`;
+export function getCssModuleClassName(className: string, cssModules: boolean) {
+  return cssModules ? `{styles.${className}}` : `'${className}'`;
 }
 
-export function getCssImport(cssModuleOpened: boolean, cssExt: string) {
- return `import${cssModuleOpened ? ' styles from' : ''} './index${getCssModuleExt(cssModuleOpened)}.${cssExt}';`
+export function getCssImport(cssModules: boolean, cssExt: string) {
+ return `import${cssModules ? ' styles from' : ''} './index${getCssModuleExt(cssModules)}.${cssExt}';`
 }
