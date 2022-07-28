@@ -1,31 +1,31 @@
 export function firstUpperCase(str: string) {
   return str.replace(/\b(\w)(\w*)/g, function (_$0, $1, $2) {
-    return $1.toUpperCase() + $2;
-  });
+    return $1.toUpperCase() + $2
+  })
 }
 export function firstLowerCase(str: string) {
   return str.replace(/\b(\w)(\w*)/g, function (_$0, $1, $2) {
-    return $1.toLowerCase() + $2;
-  });
+    return $1.toLowerCase() + $2
+  })
 }
 const cssExts = {
-  none: "css",
-  sass: "scss",
-  less: "less",
-  stylus: "styl",
-};
+  none: 'css',
+  sass: 'scss',
+  less: 'less',
+  stylus: 'styl',
+}
 export function getCssExt(css: string) {
-  return cssExts[css];
+  return cssExts[css]
 }
 
 export function getCssModuleExt(cssModules: boolean) {
-  return cssModules ? ".module" : "";
+  return cssModules ? '.module' : ''
 }
 
 export function getCssModuleClassName(className: string, cssModules: boolean) {
-  return cssModules ? `{styles.${className}}` : `'${className}'`;
+  return cssModules ? `{styles.${className}}` : `'${className}'`
 }
 
 export function getCssImport(cssModules: boolean, cssExt: string) {
- return `import${cssModules ? ' styles from' : ''} './index${getCssModuleExt(cssModules)}.${cssExt}';`
+ return `import${cssModules ? ' styles from' : ''} './index${getCssModuleExt(cssModules)}.${cssExt}'`
 }
