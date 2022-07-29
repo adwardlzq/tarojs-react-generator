@@ -27,6 +27,10 @@ const config = {
       updateRouter: {
         enable: true,
         space: 4
+      },
+      useTemplate: {
+        enable: false,
+        src: 'src/tpl'
       }
     }]
   ]
@@ -43,13 +47,53 @@ const config = {
 | typescript | boolean | 是否使用 typescript，可选 ```true```, ```false```  | ```false``` |
 | hooks | boolean | 是否使用 hooks，可选 ```true```, ```false```  | ```false``` |
 | updateRouter | object | 创建页面后更新路由配置 |  |
+| useTemplate | object | 使用 EJS 自定义模板，模板名称固定为 page.ejs 和 component.ejs |  |
 
-### updateRouter参数
+### updateRouter 参数
 
 | 参数项 | 类型 | 用途 | 默认值 |
 | :-----| :---- | :---- | :---- |
 | enable | boolean | 是否开启，可选 ```true```, ```false```  | ```true``` |
 | space | number | 插入位置缩进空格数 | ```4``` |
+
+### useTemplate 参数
+
+| 参数项 | 类型 | 用途 | 默认值 |
+| :-----| :---- | :---- | :---- |
+| enable | boolean | 是否开启，可选 ```true```, ```false```  | ```false``` |
+| src | string | 模板文件所在文件夹的路径，如 'src/tpl' |  |
+
+##### 模板示例
+```js
+/**
+ * 模板注入变量
+ * @param name: string 文件名
+ * @param upperFirst: function 将首字母大写的函数
+ * @param lowerFirst: function 将首字母小写的函数
+ */
+import { useEffect } from 'react'
+import { useDidHide, useDidShow, useRouter } from '@tarojs/taro'
+import { View } from '@tarojs/components'
+import styles from './index.module.scss'
+
+function <%= upperFirst(name) %>() {
+  const router = useRouter()
+
+  useEffect(() => {})
+
+  useDidShow(() => {})
+
+  useDidHide(() => {})
+
+  return (
+    <View className={styles.<%= name %>Page}>
+      hello
+    </View>
+  )
+}
+
+export default <%= upperFirst(name) %>
+```
 
 ### 命令行参数
 

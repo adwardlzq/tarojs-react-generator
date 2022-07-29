@@ -1,6 +1,6 @@
 {
   "name": "tarojs-react-generator",
-  "version": "1.1.1",
+  "version": "1.2.1",
   "description": "Taro 页面/组件创建工具，支持 Taro 3 + React",
   "main": "index.js",
   "scripts": {
@@ -38,6 +38,7 @@
     "typescript": "^3.8.3"
   },
   "dependencies": {
+    "ejs": "^3.1.8",
     "glob": "^7.1.6"
   }
 }

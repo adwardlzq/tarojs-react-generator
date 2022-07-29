@@ -1,11 +1,12 @@
 import * as fs from 'fs'
 import * as path from 'path'
-import { firstUpperCase, getCssModuleExt } from '../utils'
+import { upperFirst, getCssModuleExt, lowerFirst } from '../utils'
 import { pageTpl } from './template'
 import { parse } from '@babel/parser'
 import generator from '@babel/generator'
 import traverse from '@babel/traverse'
 import * as t from '@babel/types'
+import * as ejs from 'ejs'
 
 const createStyle = (name: string) =>
   `.${name}Page {
@@ -14,7 +15,7 @@ const createStyle = (name: string) =>
 `
 
 const createConfig = (name: string) => `export default definePageConfig({
-  navigationBarTitleText: '${firstUpperCase(name)}'
+  navigationBarTitleText: '${upperFirst(name)}'
 })
 `
 
@@ -52,17 +53,21 @@ const updateRouterList = (appPath: string, page: string, updateRouter: { enable:
   })
 }
 interface P {
-  cssExt: string,
-  pagePath: string,
-  appPath: string,
-  chalk: any,
-  cssModules: boolean,
-  typescript: boolean,
-  hooks: boolean,
+  cssExt: string;
+  pagePath: string;
+  appPath: string;
+  chalk: any;
+  cssModules: boolean;
+  typescript: boolean;
+  hooks: boolean;
   updateRouter: {
-    enable: boolean,
-    space: number
-  }
+    enable: boolean;
+    space: number;
+  };
+  useTemplate: {
+    enable: boolean;
+    src: string;
+  };
 }
 export function pageGenerator({
   cssExt,
@@ -72,7 +77,8 @@ export function pageGenerator({
   cssModules,
   typescript,
   hooks,
-  updateRouter
+  updateRouter,
+  useTemplate
 }: P) {
   const jsExt = typescript ? 'tsx' : 'jsx'
   const configExt = typescript ? 'ts' : 'js'
@@ -81,9 +87,25 @@ export function pageGenerator({
   // 创建目录
   fs.mkdirSync(outputDir, { recursive: true })
   // 页面
+  let html = ''
+  if (useTemplate.enable === true) {
+    try {
+      const str = fs.readFileSync(path.join(appPath, useTemplate.src, 'page.ejs'), 'utf8')
+      html = ejs.render(str, {
+        name: pageName,
+        upperFirst,
+        lowerFirst
+      });
+    } catch (err) {
+      console.log(chalk.red('读取模板失败，请检查路径或文件是否正确'))
+      return
+    }
+  } else {
+    html = pageTpl[hooks ? 'hooks' : 'class']({ name: pageName, cssExt, cssModules })
+  }
   fs.writeFile(
     path.join(outputDir, `index.${jsExt}`),
-    pageTpl[hooks ? 'hooks' : 'class']({ name: pageName, cssExt, cssModules }),
+    html,
     writeFileErrorHandler
   )
   console.log(chalk.black('创建文件：' + path.join(outputDir, `index.${jsExt}`)))

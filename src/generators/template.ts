@@ -1,10 +1,10 @@
-import { firstUpperCase, getCssModuleClassName, getCssImport, firstLowerCase } from '../utils'
+import { upperFirst, getCssModuleClassName, getCssImport, lowerFirst } from '../utils'
 export const pageTpl = {
   class: ({ name, cssExt, cssModules }) => `import { Component } from 'react'
 import { View } from '@tarojs/components'
 ${getCssImport(cssModules, cssExt)}
 
-class ${firstUpperCase(name)} extends Component {
+class ${upperFirst(name)} extends Component {
 
   componentWillUnmount() {}
 
@@ -17,20 +17,20 @@ class ${firstUpperCase(name)} extends Component {
   render() {
     return (
       <View className=${getCssModuleClassName(`${name}Page`, cssModules)}>
-        ${firstUpperCase(name)}
+        ${upperFirst(name)}
       </View>
     )
   }
 }
 
-export default ${firstUpperCase(name)}
+export default ${upperFirst(name)}
 `,
   hooks: ({ name, cssExt, cssModules }) => `import { useEffect } from 'react'
 import { useDidHide, useDidShow, useRouter } from '@tarojs/taro'
 import { View } from '@tarojs/components'
 ${getCssImport(cssModules, cssExt)}
 
-function ${firstUpperCase(name)}() {
+function ${upperFirst(name)}() {
   const router = useRouter()
 
   useEffect(() => {})
@@ -41,12 +41,12 @@ function ${firstUpperCase(name)}() {
 
   return (
     <View className=${getCssModuleClassName(`${name}Page`, cssModules)}>
-      ${firstUpperCase(name)}
+      ${upperFirst(name)}
     </View>
   )
 }
 
-export default ${firstUpperCase(name)}
+export default ${upperFirst(name)}
 `,
 }
 export const componentTpl = {
@@ -62,7 +62,7 @@ class ${name} extends Component${typescript ? `<IProps, IState>` : ''} {
 
   render() {
     return (
-      <View className=${getCssModuleClassName(`${firstLowerCase(name)}Com`, cssModules)}>
+      <View className=${getCssModuleClassName(`${lowerFirst(name)}Com`, cssModules)}>
         ${name}
       </View>
     )
@@ -75,12 +75,12 @@ export default ${name}
 ${getCssImport(cssModules, cssExt)}
 ${typescript ? `
 interface IProps {
-  style?: React.CSSProperties | undefined,
+  style?: React.CSSProperties | undefined;
 }
 ` : ''}
 ${typescript ? `const ${name}: React.FC<IProps> = ({ style }) => {` : `function ${name}() {`}
   return (
-    <View className=${getCssModuleClassName(`${firstLowerCase(name)}Com`, cssModules)}>
+    <View className=${getCssModuleClassName(`${lowerFirst(name)}Com`, cssModules)}>
       ${name}
     </View>
   )

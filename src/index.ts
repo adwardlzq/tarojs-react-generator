@@ -3,14 +3,18 @@ import { pageGenerator } from './generators/page'
 import { getCssExt } from './utils'
 
 interface optsType {
-  css?: string,
-  cssModules?: boolean,
-  typescript?: boolean,
-  hooks?: boolean,
+  css?: string;
+  cssModules?: boolean;
+  typescript?: boolean;
+  hooks?: boolean;
   updateRouter?: {
-    enable: boolean,
-    space: number,
-  }
+    enable: boolean;
+    space: number;
+  };
+  useTemplate?: {
+    enable: boolean;
+    src: string;
+  };
 }
 export default (ctx, pluginOpts: optsType) => {
   const {
@@ -19,6 +23,7 @@ export default (ctx, pluginOpts: optsType) => {
     typescript = false,
     hooks = false,
     updateRouter = { enable: true, space: 4 },
+    useTemplate = { enable: false, src: '' }
   } = pluginOpts
   ctx.registerCommand({
     // 命令名
@@ -54,6 +59,7 @@ export default (ctx, pluginOpts: optsType) => {
           chalk,
           typescript,
           hooks,
+          useTemplate
         })
       }
 
@@ -66,7 +72,8 @@ export default (ctx, pluginOpts: optsType) => {
           cssExt,
           typescript,
           hooks,
-          updateRouter
+          updateRouter,
+          useTemplate
         })
       }
 
