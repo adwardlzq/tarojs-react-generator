@@ -140,7 +140,6 @@ export function pageGenerator({
   const configExt = typescript ? 'ts' : 'js'
   const pageName = pagePath.split('/').pop() ?? ''
   const outputDir = path.join(appPath, 'src', 'pages', pagePath)
-  // 创建目录
   fs.mkdirSync(outputDir, { recursive: true })
   const configStr = getConfigStr({
     configTpl,

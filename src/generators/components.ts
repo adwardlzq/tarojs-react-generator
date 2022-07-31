@@ -111,6 +111,7 @@ export function componentGenerator({
     name: componentName,
     chalk
   })
+  if (!comStr || !styleStr) return
   // 页面
   fs.writeFile(
     path.join(outputDir, `index.${jsExt}`),
