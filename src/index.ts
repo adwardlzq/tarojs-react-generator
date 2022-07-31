@@ -11,10 +11,11 @@ interface optsType {
     enable: boolean;
     space: number;
   };
-  useTemplate?: {
-    enable: boolean;
-    src: string;
-  };
+  createConfigFile?: boolean;
+  pageTpl?: string;
+  configTpl?: string;
+  styleTpl?: string;
+  componentTpl?: string;
 }
 export default (ctx, pluginOpts: optsType) => {
   const {
@@ -23,7 +24,11 @@ export default (ctx, pluginOpts: optsType) => {
     typescript = false,
     hooks = false,
     updateRouter = { enable: true, space: 4 },
-    useTemplate = { enable: false, src: '' }
+    createConfigFile = true,
+    pageTpl = '',
+    configTpl = '',
+    styleTpl = '',
+    componentTpl = ''
   } = pluginOpts
   ctx.registerCommand({
     // 命令名
@@ -59,7 +64,8 @@ export default (ctx, pluginOpts: optsType) => {
           chalk,
           typescript,
           hooks,
-          useTemplate
+          componentTpl,
+          styleTpl
         })
       }
 
@@ -73,7 +79,10 @@ export default (ctx, pluginOpts: optsType) => {
           typescript,
           hooks,
           updateRouter,
-          useTemplate
+          createConfigFile,
+          pageTpl,
+          configTpl,
+          styleTpl
         })
       }
 

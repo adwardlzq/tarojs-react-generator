@@ -1,3 +1,6 @@
+import * as fs from 'fs'
+import * as ejs from 'ejs'
+
 export function upperFirst(str: string) {
   return str.replace(/\b(\w)(\w*)/g, (_$0, $1, $2) => {
     return $1.toUpperCase() + $2
@@ -28,4 +31,18 @@ export function getCssModuleClassName(className: string, cssModules: boolean) {
 
 export function getCssImport(cssModules: boolean, cssExt: string) {
  return `import${cssModules ? ' styles from' : ''} './index${getCssModuleExt(cssModules)}.${cssExt}'`
+}
+
+export function createByEjs(path: string, params: object = {}, errMsg: string = '') {
+  try {
+    const str = fs.readFileSync(path, 'utf8')
+    return ejs.render(str, {
+      upperFirst,
+      lowerFirst,
+      ...params
+    });
+  } catch (err) {
+    console.log(errMsg)
+    return ''
+  }
 }

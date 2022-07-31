@@ -4,15 +4,51 @@ import {
   upperFirst,
   lowerFirst,
   getCssModuleExt,
+  createByEjs
 } from '../utils'
-import { componentTpl } from './template'
-import * as ejs from 'ejs'
+import { componentTplMap } from './template'
 
-const createStyle = (name: string) =>
-  `.${lowerFirst(name)}Com {
+const getComStr = ({
+  componentTpl,
+  appPath,
+  name,
+  cssExt,
+  cssModules,
+  hooks,
+  chalk,
+  typescript
+}) => {
+  let str = ''
+  if (componentTpl) {
+    str = createByEjs(path.join(appPath, componentTpl), {
+      name,
+    }, chalk.red('读取组件模板失败，请检查路径或文件是否正确'))
+  } else {
+    str = componentTplMap[hooks ? 'hooks' : 'class']({ name, cssExt, cssModules, typescript })
+  }
+  return str
+}
+
+const getStyleStr = ({
+  styleTpl,
+  appPath,
+  name,
+  chalk
+}) => {
+  let str = ''
+  if (styleTpl) {
+    str = createByEjs(path.join(appPath, styleTpl), {
+      name,
+      isPage: false
+    }, chalk.red('读取样式模板失败，请检查路径或文件是否正确'))
+  } else {
+    str = `.${lowerFirst(name)}Com {
   
 }
 `
+  }
+  return str
+}
 
 function writeFileErrorHandler(err) {
   if (err) throw err
@@ -25,10 +61,8 @@ interface P {
   cssModules: boolean;
   typescript: boolean;
   hooks: boolean;
-  useTemplate: {
-    enable: boolean;
-    src: string;
-  };
+  componentTpl: string;
+  styleTpl: string;
 }
 export function componentGenerator({
   cssModules,
@@ -38,7 +72,8 @@ export function componentGenerator({
   cssExt,
   typescript,
   hooks,
-  useTemplate
+  componentTpl,
+  styleTpl
 }: P) {
   const jsExt = typescript ? 'tsx' : 'jsx'
   const pathArr = componentPath.split('/')
@@ -60,33 +95,33 @@ export function componentGenerator({
     componentName
   )
   fs.mkdirSync(outputDir, { recursive: true })
+  const comStr = getComStr({
+    componentTpl,
+    appPath,
+    name: componentName,
+    cssExt,
+    cssModules,
+    hooks,
+    chalk,
+    typescript
+  })
+  const styleStr = getStyleStr({
+    styleTpl,
+    appPath,
+    name: componentName,
+    chalk
+  })
   // 页面
-  let html = ''
-  if (useTemplate.enable === true) {
-    try {
-      const str = fs.readFileSync(path.join(appPath, useTemplate.src, 'component.ejs'), 'utf8')
-      html = ejs.render(str, {
-        name: componentName,
-        upperFirst,
-        lowerFirst
-      });
-    } catch (err) {
-      console.log(chalk.red('读取模板失败，请检查路径或文件是否正确'))
-      return
-    }
-  } else {
-    html = componentTpl[hooks ? 'hooks' : 'class']({ name: componentName, cssExt, cssModules, typescript })
-  }
   fs.writeFile(
     path.join(outputDir, `index.${jsExt}`),
-    html,
+    comStr,
     writeFileErrorHandler
   )
   console.log(chalk.black('创建文件：' + path.join(outputDir, `index.${jsExt}`)))
   // 样式
   fs.writeFile(
     path.join(outputDir, `index${getCssModuleExt(cssModules)}.${cssExt}`),
-    createStyle(componentName),
+    styleStr,
     writeFileErrorHandler
   )
   console.log(chalk.black('创建文件：' + path.join(outputDir, `index${getCssModuleExt(cssModules)}.${cssExt}`)))

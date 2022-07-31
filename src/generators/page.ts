@@ -1,23 +1,76 @@
 import * as fs from 'fs'
 import * as path from 'path'
-import { upperFirst, getCssModuleExt, lowerFirst } from '../utils'
-import { pageTpl } from './template'
+import { upperFirst, getCssModuleExt, createByEjs } from '../utils'
+import { pageTplMap } from './template'
 import { parse } from '@babel/parser'
 import generator from '@babel/generator'
 import traverse from '@babel/traverse'
 import * as t from '@babel/types'
-import * as ejs from 'ejs'
 
-const createStyle = (name: string) =>
-  `.${name}Page {
+const getPageStr = ({
+  pageTpl,
+  appPath,
+  name,
+  cssExt,
+  cssModules,
+  hooks,
+  chalk,
+  configStr,
+  createConfigFile
+}) => {
+  let str = ''
+  if (pageTpl) {
+    str = createByEjs(path.join(appPath, pageTpl), {
+      name,
+    }, chalk.red('读取页面模板失败，请检查路径或文件是否正确'))
+  } else {
+    str = pageTplMap[hooks ? 'hooks' : 'class']({ name, cssExt, cssModules, configStr, createConfigFile })
+  }
+  return str
+}
+
+const getStyleStr = ({
+  styleTpl,
+  appPath,
+  name,
+  chalk
+}) => {
+  let str = ''
+  if (styleTpl) {
+    str = createByEjs(path.join(appPath, styleTpl), {
+      name,
+      isPage: true
+    }, chalk.red('读取样式模板失败，请检查路径或文件是否正确'))
+  } else {
+    str = `.${name}Page {
   
 }
 `
+  }
+  return str
+}
 
-const createConfig = (name: string) => `export default definePageConfig({
+const getConfigStr = ({
+  configTpl,
+  name,
+  chalk,
+  appPath,
+  createConfigFile
+}) => {
+  let str = ''
+  if (configTpl) {
+    str = createByEjs(path.join(appPath, configTpl), {
+      name,
+    }, chalk.red('读取配置模板失败，请检查路径或文件是否正确'))
+  } else {
+    str = `${createConfigFile === false ? `
+` : 'export default '}definePageConfig({
   navigationBarTitleText: '${upperFirst(name)}'
 })
 `
+  }
+  return str
+}
 
 function writeFileErrorHandler(err) {
   if (err) throw err
@@ -64,10 +117,10 @@ interface P {
     enable: boolean;
     space: number;
   };
-  useTemplate: {
-    enable: boolean;
-    src: string;
-  };
+  createConfigFile: boolean;
+  pageTpl: string;
+  configTpl: string;
+  styleTpl: string;
 }
 export function pageGenerator({
   cssExt,
@@ -78,7 +131,10 @@ export function pageGenerator({
   typescript,
   hooks,
   updateRouter,
-  useTemplate
+  createConfigFile,
+  pageTpl,
+  configTpl,
+  styleTpl,
 }: P) {
   const jsExt = typescript ? 'tsx' : 'jsx'
   const configExt = typescript ? 'ts' : 'js'
@@ -86,43 +142,54 @@ export function pageGenerator({
   const outputDir = path.join(appPath, 'src', 'pages', pagePath)
   // 创建目录
   fs.mkdirSync(outputDir, { recursive: true })
+  const configStr = getConfigStr({
+    configTpl,
+    name: pageName,
+    chalk,
+    appPath,
+    createConfigFile
+  })
+  const pageStr = getPageStr({
+    pageTpl,
+    appPath,
+    name: pageName,
+    cssExt,
+    cssModules,
+    hooks,
+    chalk,
+    configStr,
+    createConfigFile
+  })
+  const styleStr = getStyleStr({
+    styleTpl,
+    appPath,
+    name: pageName,
+    chalk
+  })
+  if (!configStr || !pageStr || !styleStr) return
   // 页面
-  let html = ''
-  if (useTemplate.enable === true) {
-    try {
-      const str = fs.readFileSync(path.join(appPath, useTemplate.src, 'page.ejs'), 'utf8')
-      html = ejs.render(str, {
-        name: pageName,
-        upperFirst,
-        lowerFirst
-      });
-    } catch (err) {
-      console.log(chalk.red('读取模板失败，请检查路径或文件是否正确'))
-      return
-    }
-  } else {
-    html = pageTpl[hooks ? 'hooks' : 'class']({ name: pageName, cssExt, cssModules })
-  }
   fs.writeFile(
     path.join(outputDir, `index.${jsExt}`),
-    html,
+    pageStr,
     writeFileErrorHandler
   )
   console.log(chalk.black('创建文件：' + path.join(outputDir, `index.${jsExt}`)))
   // 样式
   fs.writeFile(
     path.join(outputDir, `index${getCssModuleExt(cssModules)}.${cssExt}`),
-    createStyle(pageName),
+    styleStr,
     writeFileErrorHandler
   )
   console.log(chalk.black('创建文件：' + path.join(outputDir, `index${getCssModuleExt(cssModules)}.${cssExt}`)))
   // 配置
-  fs.writeFile(
-    path.join(outputDir, `index.config.${configExt}`),
-    createConfig(pageName),
-    writeFileErrorHandler
-  )
-  console.log(chalk.black('创建文件：' + path.join(outputDir, `index.config.${configExt}`)))
+  if (createConfigFile !== false) {
+    fs.writeFile(
+      path.join(outputDir, `index.config.${configExt}`),
+      configStr,
+      writeFileErrorHandler
+    )
+    console.log(chalk.black('创建文件：' + path.join(outputDir, `index.config.${configExt}`)))
+  }
   // 更新路由
   updateRouterList(appPath, `pages/${pagePath}/index`, updateRouter)
   console.log(chalk.green(`页面「${pageName}」创建成功${updateRouter.enable === false ? `，${chalk.blue('请记得更新路由配置')}` : '，路由配置已自动更新'}`))

@@ -1,9 +1,9 @@
 import { upperFirst, getCssModuleClassName, getCssImport, lowerFirst } from '../utils'
-export const pageTpl = {
-  class: ({ name, cssExt, cssModules }) => `import { Component } from 'react'
+export const pageTplMap = {
+  class: ({ name, cssExt, cssModules, configStr, createConfigFile }) => `import { Component } from 'react'
 import { View } from '@tarojs/components'
 ${getCssImport(cssModules, cssExt)}
-
+${createConfigFile === false ? configStr : ''}
 class ${upperFirst(name)} extends Component {
 
   componentWillUnmount() {}
@@ -25,11 +25,11 @@ class ${upperFirst(name)} extends Component {
 
 export default ${upperFirst(name)}
 `,
-  hooks: ({ name, cssExt, cssModules }) => `import { useEffect } from 'react'
+  hooks: ({ name, cssExt, cssModules, configStr, createConfigFile }) => `import { useEffect } from 'react'
 import { useDidHide, useDidShow, useRouter } from '@tarojs/taro'
 import { View } from '@tarojs/components'
 ${getCssImport(cssModules, cssExt)}
-
+${createConfigFile === false ? configStr : ''}
 function ${upperFirst(name)}() {
   const router = useRouter()
 
@@ -49,7 +49,7 @@ function ${upperFirst(name)}() {
 export default ${upperFirst(name)}
 `,
 }
-export const componentTpl = {
+export const componentTplMap = {
   class: ({ name, cssExt, cssModules, typescript }) => `import { Component } from 'react'
 import { View } from '@tarojs/components'
 ${getCssImport(cssModules, cssExt)}

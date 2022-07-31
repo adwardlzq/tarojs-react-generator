@@ -1,6 +1,6 @@
 # tarojs-react-generator
 
-> Taro 页面/组件创建工具，支持 Taro 3 + React
+> Taro 页面/组件创建工具，高度可定制化，支持 Taro 3 + React
 
 ## 安装
 
@@ -21,17 +21,7 @@ const config = {
     ...
     ['tarojs-react-generator', {
       css: 'sass',
-      cssModules: true,
-      typescript: true,
-      hooks: true,
-      updateRouter: {
-        enable: true,
-        space: 4
-      },
-      useTemplate: {
-        enable: false,
-        src: 'src/tpl'
-      }
+      cssModules: true
     }]
   ]
   ...
@@ -40,30 +30,28 @@ const config = {
 
 ### 插件配置
 
-| 参数项 | 类型 | 用途 | 默认值 |
+| 参数项 | 类型 | 说明 | 默认值 |
 | :-----| :---- | :---- | :---- |
 | css | string | 指定 css 预处理器，可选 ```none```, ```sass```, ```less```, ```stylus``` | ```sass```|
 | cssModules | boolean | 是否开启 cssModules，可选 ```true```, ```false```  | ```true``` |
 | typescript | boolean | 是否使用 typescript，可选 ```true```, ```false```  | ```false``` |
 | hooks | boolean | 是否使用 hooks，可选 ```true```, ```false```  | ```false``` |
+| createConfigFile | boolean | 是否单独创建页面配置文件，可选 ```true```, ```false```  | ```true``` |
 | updateRouter | object | 创建页面后更新路由配置 |  |
-| useTemplate | object | 使用 EJS 自定义模板，模板名称固定为 page.ejs 和 component.ejs |  |
+| pageTpl | string | 自定义页面模板的路径，如'src/tpl/page.ejs'，注入变量有 ```name```, ```upperFirst```, ```lowerFirst``` | 默认为''，不使用自定义模板 |
+| componentTpl | string | 自定义组件模板的路径，注入变量有 ```name```, ```upperFirst```, ```lowerFirst``` | 默认为''，不使用自定义模板 |
+| configTpl | string | 自定义配置模板的路径，注入变量有 ```name```, ```upperFirst```, ```lowerFirst``` | 默认为''，不使用自定义模板 |
+| styleTpl | string | 自定义样式模板的路径，注入变量有 ```name```, ```isPage```, ```upperFirst```, ```lowerFirst``` | 默认为''，不使用自定义模板 |
 
 ### updateRouter 参数
 
-| 参数项 | 类型 | 用途 | 默认值 |
+| 参数项 | 类型 | 说明 | 默认值 |
 | :-----| :---- | :---- | :---- |
 | enable | boolean | 是否开启，可选 ```true```, ```false```  | ```true``` |
 | space | number | 插入位置缩进空格数 | ```4``` |
 
-### useTemplate 参数
-
-| 参数项 | 类型 | 用途 | 默认值 |
-| :-----| :---- | :---- | :---- |
-| enable | boolean | 是否开启，可选 ```true```, ```false```  | ```false``` |
-| src | string | 模板文件所在文件夹的路径，如 'src/tpl' |  |
-
 ##### 模板示例
+src/tpl/page.ejs
 ```js
 /**
  * 模板注入变量
@@ -72,18 +60,10 @@ const config = {
  * @param lowerFirst: function 将首字母小写的函数
  */
 import { useEffect } from 'react'
-import { useDidHide, useDidShow, useRouter } from '@tarojs/taro'
 import { View } from '@tarojs/components'
 import styles from './index.module.scss'
 
 function <%= upperFirst(name) %>() {
-  const router = useRouter()
-
-  useEffect(() => {})
-
-  useDidShow(() => {})
-
-  useDidHide(() => {})
 
   return (
     <View className={styles.<%= name %>Page}>
@@ -94,10 +74,20 @@ function <%= upperFirst(name) %>() {
 
 export default <%= upperFirst(name) %>
 ```
+src/tpl/style.ejs
+```js
+<% if (isPage) { %>.<%= name %>Page {
+
+}
+<% } else { %>.<%= lowerFirst(name) %>Com {
+
+}
+<% } %>
+```
 
 ### 命令行参数
 
-| 参数项 | 类型 | 用途 |
+| 参数项 | 类型 | 说明 |
 | :-----| :---- | :---- |
 | --component | string | 创建一个公共组件/页面组件 |
 | --page | string | 创建一个页面 |
