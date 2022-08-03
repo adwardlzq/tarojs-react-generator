@@ -79,7 +79,7 @@ export function componentGenerator({
   const pathArr = componentPath.split('/')
   const componentName = upperFirst(pathArr.pop() ?? '')
   const pagePath = pathArr.join('/')
-  if (pathArr.length > 1) {
+  if (pagePath) {
     // 检测页面是否存在
     const pageDir = path.join(appPath, 'src', 'pages', pagePath)
     if (!fs.existsSync(pageDir)) {

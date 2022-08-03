@@ -1,6 +1,6 @@
 # tarojs-react-generator
 
-> Taro 页面/组件创建工具，高度可定制化，支持 Taro 3 + React
+> Taro 页面/组件创建工具，支持 Taro 3 + React
 
 ## 安装
 

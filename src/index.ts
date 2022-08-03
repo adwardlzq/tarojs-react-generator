@@ -50,11 +50,12 @@ export default (ctx, pluginOpts: optsType) => {
       const { chalk } = ctx.helper
       let { component, page } = ctx.runOpts.options
       const { appPath } = ctx.paths
-
-      if (typeof component !== 'string' && typeof page !== 'string') {
+      if (component !== undefined && typeof component !== 'string') {
+        return console.log(chalk.red('Usage: taro g --component <path>'))
+      }
+      if (page !== undefined && typeof page !== 'string') {
         return console.log(chalk.red('Usage: taro g --page <name>'))
       }
-
       if (typeof component === 'string') {
         return componentGenerator({
           cssModules,
