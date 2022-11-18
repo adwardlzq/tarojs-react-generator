@@ -35,31 +35,31 @@ export default (ctx, pluginOpts: optsType) => {
     name: 'g',
     // 执行 taro g --help 时输出的 options 信息
     optionsMap: {
-      '--component': '组件名称(大写)',
-      '--page': '页面路径',
+      '--com': '组件',
+      '--page': '页面',
     },
     // 执行 taro g --help 时输出的使用例子的信息
     synopsisList: [
-      'taro g --component Button             (生成：src/components/Button/index.tsx)',
-      'taro g --component index/Banner       (生成：src/pages/index/components/Banner/index.tsx)',
-      'taro g --page mine                    (生成：src/pages/mine/index.tsx)',
-      'taro g --page mine/detailPage         (生成：src/pages/mine/detailPage/index.tsx)',
+      'taro g --com Button              (生成：src/components/Button/index.tsx)',
+      'taro g --com index/Banner        (生成：src/pages/index/components/Banner/index.tsx)',
+      'taro g --page mine               (生成：src/pages/mine/index.tsx)',
+      'taro g --page mine/detailPage    (生成：src/pages/mine/detailPage/index.tsx)',
     ],
     async fn() {
       const cssExt = getCssExt(css)
       const { chalk } = ctx.helper
-      let { component, page } = ctx.runOpts.options
+      let { com, page } = ctx.runOpts.options
       const { appPath } = ctx.paths
-      if (component !== undefined && typeof component !== 'string') {
-        return console.log(chalk.red('Usage: taro g --component <path>'))
+      if (com !== undefined && typeof com !== 'string') {
+        return console.log(chalk.red('Usage: taro g --com <path>'))
       }
       if (page !== undefined && typeof page !== 'string') {
         return console.log(chalk.red('Usage: taro g --page <name>'))
       }
-      if (typeof component === 'string') {
+      if (typeof com === 'string') {
         return componentGenerator({
           cssModules,
-          componentPath: component,
+          componentPath: com,
           appPath,
           cssExt,
           chalk,

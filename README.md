@@ -89,7 +89,7 @@ src/tpl/style.ejs
 
 | 参数项 | 类型 | 说明 |
 | :-----| :---- | :---- |
-| --component | string | 创建一个公共组件/页面组件 |
+| --com | string | 创建一个公共组件/页面组件 |
 | --page | string | 创建一个页面 |
 
 
@@ -97,13 +97,13 @@ src/tpl/style.ejs
 
 ##### 创建公共组件
 ```bash
-taro g --component Button
+taro g --com Button
 ```
 
 
 ##### 创建页面组件（index为页面文件夹名称）
 ```bash
-taro g --component index/Button  
+taro g --com index/Button  
 ```
 
 
