@@ -34,7 +34,7 @@ export default ${upperFirst(name)}
 `,
 }
 export const componentTplMap = {
-  class: ({ name, cssExt, cssModules, typescript }) => `import { Component } from 'react'
+  class: ({ name, cssExt, cssModules }) => `import { Component } from 'react'
 import { View } from '@tarojs/components'
 ${getCssImport(cssModules, cssExt)}
 
