@@ -140,6 +140,9 @@ export function pageGenerator({
   const configExt = typescript ? 'ts' : 'js'
   const pageName = pagePath.split('/').pop() ?? ''
   const outputDir = path.join(appPath, 'src', 'pages', pagePath)
+  if (fs.existsSync(outputDir)) {
+    return console.log(chalk.red(`页面已存在`))
+  }
   fs.mkdirSync(outputDir, { recursive: true })
   const configStr = getConfigStr({
     configTpl,

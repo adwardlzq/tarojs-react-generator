@@ -94,6 +94,9 @@ export function componentGenerator({
     'components',
     componentName
   )
+  if (fs.existsSync(outputDir)) {
+    return console.log(chalk.red(`组件已存在`))
+  }
   fs.mkdirSync(outputDir, { recursive: true })
   const comStr = getComStr({
     componentTpl,
