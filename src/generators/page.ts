@@ -191,5 +191,5 @@ export function pageGenerator({
   }
   // 更新路由
   updateRouterList(appPath, `pages/${pagePath}/index`, updateRouter)
-  console.log(chalk.green(`页面「${pageName}」创建成功${updateRouter.enable === false ? `，${chalk.blue('请记得更新路由配置')}` : '，路由配置已自动更新'}`))
+  console.log(chalk.green(`页面「${pageName}」创建成功${updateRouter.enable === false ? '' : '，路由已更新'}`))
 }
